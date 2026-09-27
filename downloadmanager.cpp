@@ -30,8 +30,8 @@ DownloadManager::DownloadManager(QObject *parent) :
     manager(new QNetworkAccessManager(this)),
     latestReply(NULL)
 {
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(handleGetFinished(QNetworkReply*)));
+    connect(manager, &QNetworkAccessManager::finished,
+            this, &DownloadManager::handleGetFinished);
 }
 
 DownloadManager::~DownloadManager()
@@ -52,7 +52,8 @@ QNetworkReply* DownloadManager::get(const QUrl &url)
     latestReply->ignoreSslErrors();
 #endif
 
-    connect(latestReply, SIGNAL(downloadProgress(qint64,qint64)), SLOT(handleProgress(qint64,qint64)));
+    connect(latestReply, &QNetworkReply::downloadProgress,
+            this, &DownloadManager::handleProgress);
     return latestReply;
 }
 
@@ -92,7 +93,8 @@ void DownloadManager::handleGetFinished(QNetworkReply *reply)
 
                 // prepare for download
                 get(redirectionUrl);
-                connect(latestReply, SIGNAL(readyRead()), this, SLOT(handleReadyRead()));
+                connect(latestReply, &QNetworkReply::readyRead,
+                        this, &DownloadManager::handleReadyRead);
             } else {
                 qDebug() << "Redirected but no redirection url?!";
             }
