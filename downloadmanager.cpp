@@ -28,7 +28,7 @@
 DownloadManager::DownloadManager(QObject *parent) :
     QObject(parent),
     manager(new QNetworkAccessManager(this)),
-    latestReply(NULL)
+    latestReply(nullptr)
 {
     connect(manager, &QNetworkAccessManager::finished,
             this, &DownloadManager::handleGetFinished);
@@ -123,7 +123,7 @@ void DownloadManager::handleGetFinished(QNetworkReply *reply)
 
     reply->deleteLater();
     if (reply == latestReply)
-        latestReply = NULL;
+        latestReply = nullptr;
 }
 
 void DownloadManager::handleReadyRead()
@@ -142,6 +142,6 @@ void DownloadManager::handleReadyRead()
     } else {
         qDebug() << "HandleReadyRead(): Something went wrong with the get request:" << latestReply->errorString();
         latestReply->deleteLater();
-        latestReply = NULL;
+        latestReply = nullptr;
     }
 }

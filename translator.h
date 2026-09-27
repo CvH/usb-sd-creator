@@ -36,10 +36,10 @@ public:
     void fillLanguages(QMenu *menuPtr, QPushButton *langBtnPtr);
 
 private:
-    QMenu *menu;
-    QPushButton *langBtn;
-    QSettings *settings;
-    QTranslator *qtranslator;
+    QMenu *menu = nullptr;
+    QPushButton *langBtn = nullptr;
+    QSettings *settings = nullptr;
+    QTranslator *qtranslator = nullptr;
 
 protected slots:
     void languageAction(QAction *action);

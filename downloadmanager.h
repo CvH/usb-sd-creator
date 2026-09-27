@@ -50,8 +50,8 @@ private slots:
     void handleReadyRead();
 
 private:
-    QNetworkAccessManager* manager;
-    QNetworkReply* latestReply;
+    QNetworkAccessManager* manager = nullptr;
+    QNetworkReply* latestReply = nullptr;
 
     enum {
         RESPONSE_OK = 200,

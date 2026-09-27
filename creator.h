@@ -98,9 +98,9 @@ private:
         STACK_WIDGET_ABOUT = 1
     };
 
-    int timerId;
-    QTimer *devicesTimer;
-    qlonglong bytesDownloaded;
+    int timerId = 0;
+    QTimer *devicesTimer = nullptr;
+    qlonglong bytesDownloaded = 0;
     QString imageFileName;
     QCryptographicHash imageHash;
     QFile imageFile;
@@ -109,22 +109,22 @@ private:
     QString checksum;
     QString selectedImage;
     QMap<QString, QString> checksumMap;
-    DiskWriter *diskWriter;
-    QThread* diskWriterThread;
-    DeviceEnumerator* devEnumerator;
+    DiskWriter *diskWriter = nullptr;
+    QThread* diskWriterThread = nullptr;
+    DeviceEnumerator* devEnumerator = nullptr;
     static const int timerValue;
     static const QString releasesUrl;
     static const QString versionUrl;
     static const QString helpUrl;
-    JsonParser *parserData;
+    JsonParser *parserData = nullptr;
     QSettings settings;
     QElapsedTimer speedTime;
-    qlonglong bytesLast;
-    MovingAverage *averageSpeed;
-    unsigned int uncompressedImageSize;
+    qlonglong bytesLast = 0;
+    MovingAverage *averageSpeed = nullptr;
+    unsigned int uncompressedImageSize = 0;
     Privileges privileges;
     QString deviceEjected;
-    bool showLoadEject;
+    bool showLoadEject = false;
 
 protected:
     void timerEvent(QTimerEvent *event) override;
