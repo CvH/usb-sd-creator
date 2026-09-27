@@ -62,13 +62,9 @@ private:
     DownloadManager* manager;
     Translator *translator;
 
-    void parseAndSetLinks(const QByteArray &data);
-    void saveAndUpdateProgress(QNetworkReply *reply);
     void disableControls(const int which);
     bool isChecksumValid(const QString);
 
-    QByteArray rangeByteArray(qlonglong first, qlonglong last);
-    QNetworkRequest createRequest(QUrl &url, qlonglong first, qlonglong last);
     unsigned int getUncompressedImageSize();
     void setImageFileName(QString filename);
     QString getDefaultSaveDir();
@@ -136,7 +132,6 @@ protected:
 
 signals:
     void proceedToWriteImageToDevice(const QString& image, const QString& device, const QString& deviceText);
-    void error(const QString& message);
 
 private slots:
     void httpsUrlHandler(const QUrl &url);

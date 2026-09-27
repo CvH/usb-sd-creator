@@ -30,12 +30,6 @@
 #include <QVersionNumber>
 #include <algorithm>
 
-QTextStream& qStdOut()
-{
-    static QTextStream ts( stdout );
-    return ts;
-}
-
 bool compareVersion(const QVariantMap &imageMap1, const QVariantMap &imageMap2)
 {
     static const QRegularExpression regExp(QStringLiteral("-([0-9]+\\.[0-9]+\\.[0-9]+).*\\.img\\.gz"));
@@ -79,10 +73,6 @@ bool ReadImageName(const QJsonObject& imageObject, int projectIndex, QList<QVari
 
     if (imageName.endsWith(".img.gz"))
     {
-        // QTextStream& textStream = qStdOut();
-        // textStream << "Image: " << imageName << " - " << imageProps["sha256"].toString() << " - " << imageProps["size"].toString() << "\n";
-        // textStream.flush();
-
         //We need to add the full map to the list as we'll need the name, sha256 and the size.
         if (projectIndex < 0) // new project
             imagesList.append(std::move(imageProps));
