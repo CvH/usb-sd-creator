@@ -2,7 +2,7 @@
 
 brew install ninja
 
-qtVersion='6.7.2'
+qtVersion='6.11.1'
 qtVersionWithoutDots=${qtVersion//./}
 
 cd ..

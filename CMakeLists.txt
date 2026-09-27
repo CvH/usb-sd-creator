@@ -34,7 +34,7 @@ if(LINUX)
     list(APPEND qtComponents DBus)
 endif()
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS ${qtComponents})
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${qtComponents})
+find_package(Qt${QT_VERSION_MAJOR} 6.11 REQUIRED COMPONENTS ${qtComponents})
 
 if(MSVC_TOOLSET_VERSION EQUAL 142)
     if(CMAKE_SYSTEM_PROCESSOR MATCHES "ARM64")
