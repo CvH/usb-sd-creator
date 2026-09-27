@@ -822,7 +822,7 @@ bool Creator::isChecksumValid(const QString checksumSha256)
 // Might not be portable!
 unsigned int Creator::getUncompressedImageSize()
 {
-    FILE *file;
+    FILE *file = nullptr;
     unsigned int len;
     unsigned char bufSize[4];
     unsigned int fileSize;
@@ -835,7 +835,7 @@ unsigned int Creator::getUncompressedImageSize()
 #else
     file = fopen(imageFile.fileName().toStdString().c_str(), "rb");
 #endif
-    if (file == NULL)
+    if (file == nullptr)
     {
         emit error("Couldn't open " + imageFile.fileName());
         return 0;
