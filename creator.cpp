@@ -103,55 +103,55 @@ Creator::Creator(Privileges &privilegesArg, QWidget *parent) :
     // add minimize button on Windows
     this->setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
 
-    connect(diskWriterThread, SIGNAL(finished()),
-            diskWriter, SLOT(deleteLater()));
-    connect(this, SIGNAL(proceedToWriteImageToDevice(QString,QString,QString)),
-            diskWriter, SLOT(writeImageToRemovableDevice(QString,QString,QString)));
+    connect(diskWriterThread, &QThread::finished,
+            diskWriter, &QObject::deleteLater);
+    connect(this, &Creator::proceedToWriteImageToDevice,
+            diskWriter, &DiskWriter::writeImageToRemovableDevice);
 
-    connect(diskWriter, SIGNAL(bytesWritten(int)),this, SLOT(handleWriteProgress(int)));
-    connect(diskWriter, SIGNAL(syncing()), this, SLOT(writingSyncing()));
-    connect(diskWriter, SIGNAL(finished()), this, SLOT(writingFinished()));
-    connect(diskWriter, SIGNAL(error(QString)), this, SLOT(writingError(QString)));
+    connect(diskWriter, &DiskWriter::bytesWritten, this, &Creator::handleWriteProgress);
+    connect(diskWriter, &DiskWriter::syncing, this, &Creator::writingSyncing);
+    connect(diskWriter, &DiskWriter::finished, this, &Creator::writingFinished);
+    connect(diskWriter, &DiskWriter::error, this, &Creator::writingError);
     diskWriterThread->start();
 
-    connect(ui->refreshRemovablesButton,SIGNAL(clicked()),
-            this,SLOT(refreshRemovablesList()));
+    connect(ui->refreshRemovablesButton, &QAbstractButton::clicked,
+            this, &Creator::refreshRemovablesList);
 
-    connect(manager, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(handleDownloadProgress(qint64, qint64)));
-    connect(manager, SIGNAL(downloadComplete(QByteArray)),
-            this, SLOT(handleFinishedDownload(QByteArray)));
-    connect(manager, SIGNAL(partialData(QByteArray,qlonglong)),
-            this, SLOT(handlePartialData(QByteArray,qlonglong)));
-    connect(manager, SIGNAL(downloadError(QString)),
-            this, SLOT(handleDownloadError(QString)));
+    connect(manager, &DownloadManager::downloadProgress,
+            this, &Creator::handleDownloadProgress);
+    connect(manager, &DownloadManager::downloadComplete,
+            this, &Creator::handleFinishedDownload);
+    connect(manager, &DownloadManager::partialData,
+            this, &Creator::handlePartialData);
+    connect(manager, &DownloadManager::downloadError,
+            this, &Creator::handleDownloadError);
 
-    connect(ui->downloadButton, SIGNAL(clicked()),
-            this, SLOT(downloadButtonClicked()));
-    connect(ui->loadButton, SIGNAL(clicked()),
-            this, SLOT(getImageFileNameFromUser()));
-    connect(ui->writeFlashButton, SIGNAL(clicked()),
-            this, SLOT(writeFlashButtonClicked()));
+    connect(ui->downloadButton, &QPushButton::clicked,
+            this, &Creator::downloadButtonClicked);
+    connect(ui->loadButton, &QPushButton::clicked,
+            this, &Creator::getImageFileNameFromUser);
+    connect(ui->writeFlashButton, &QPushButton::clicked,
+            this, &Creator::writeFlashButtonClicked);
 
-    connect(ui->imagesShowAll, SIGNAL(stateChanged(int)),
-            this, SLOT(projectImagesShowAllChanged(int)));
-    connect(ui->projectSelectBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(setProjectImages()));
-    connect(ui->imageSelectBox, SIGNAL(currentTextChanged(QString)),
-            this, SLOT(projectImagesChanged(QString)));
+    connect(ui->imagesShowAll, &QCheckBox::checkStateChanged,
+            this, [this](Qt::CheckState state) { projectImagesShowAllChanged(static_cast<int>(state)); });
+    connect(ui->projectSelectBox, &QComboBox::currentIndexChanged,
+            this, &Creator::setProjectImages);
+    connect(ui->imageSelectBox, &QComboBox::currentTextChanged,
+            this, &Creator::projectImagesChanged);
 
-    connect(ui->removableDevicesComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(savePreferredRemovableDevice(int)));
+    connect(ui->removableDevicesComboBox, &QComboBox::currentIndexChanged,
+            this, &Creator::savePreferredRemovableDevice);
 
-    connect(ui->ejectUSB, SIGNAL(clicked()), this, SLOT(ejectUSB()));
-    connect(ui->loadUSB, SIGNAL(clicked()), this, SLOT(loadUSB()));
-    connect(ui->removeUSB, SIGNAL(clicked()), this, SLOT(removeUSB()));
-    connect(ui->helpButton, SIGNAL(clicked()), this, SLOT(showHelp()));
-    connect(ui->showAboutButton, SIGNAL(clicked()), this, SLOT(showAbout()));
-    connect(ui->closeAboutButton, SIGNAL(clicked()), this, SLOT(closeAbout()));
-    connect(ui->closeAppButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->ejectUSB, &QPushButton::clicked, this, &Creator::ejectUSB);
+    connect(ui->loadUSB, &QPushButton::clicked, this, &Creator::loadUSB);
+    connect(ui->removeUSB, &QPushButton::clicked, this, &Creator::removeUSB);
+    connect(ui->helpButton, &QPushButton::clicked, this, &Creator::showHelp);
+    connect(ui->showAboutButton, &QPushButton::clicked, this, &Creator::showAbout);
+    connect(ui->closeAboutButton, &QPushButton::clicked, this, &Creator::closeAbout);
+    connect(ui->closeAppButton, &QPushButton::clicked, this, &QWidget::close);
 
-    connect(ui->langButton,SIGNAL(clicked()), this, SLOT(languageChange()));
+    connect(ui->langButton, &QPushButton::clicked, this, &Creator::languageChange);
 
     refreshRemovablesList();
 
@@ -759,7 +759,8 @@ bool Creator::isChecksumValid(const QString checksumSha256)
     QCryptographicHash c(QCryptographicHash::Sha256);
 
     // calculate the sha256 sum of the downloaded file
-    imageFile.open(QFile::ReadOnly);
+    if (!imageFile.open(QFile::ReadOnly))
+        return false;
     while (!imageFile.atEnd())
         c.addData(imageFile.read(4096));
 
