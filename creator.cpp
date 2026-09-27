@@ -554,7 +554,7 @@ void Creator::setProjectImages()
             QString imageSize = (*it)["size"].toString();
 
             QString versionNum;
-            QRegularExpression versionNumRegExp = QRegularExpression("-([0-9]+\\.[0-9]+\\.[0-9]+).*\\.img\\.gz");
+            static const QRegularExpression versionNumRegExp(QStringLiteral("-([0-9]+\\.[0-9]+\\.[0-9]+).*\\.img\\.gz"));
             QRegularExpressionMatch versionNumMatch = versionNumRegExp.match(imageName);
             if (versionNumMatch.hasMatch())
                 versionNum = versionNumMatch.captured(1);
@@ -578,7 +578,7 @@ void Creator::setProjectImages()
 
             // LibreELEC-RPi2.arm-7.90.002.img.gz
             // LibreELEC-TinkerBoard.arm-8.90.015-rk3288.img.gz
-            QRegularExpression regExp = QRegularExpression(".+-[0-9]+\\.(9[05])\\.[0-9]+.*\\.img\\.gz");
+            static const QRegularExpression regExp(QStringLiteral(".+-[0-9]+\\.(9[05])\\.[0-9]+.*\\.img\\.gz"));
             QRegularExpressionMatch match = regExp.match(imageName);
             QStringList regExpVal = match.capturedTexts();
             QString alphaBetaNumber;

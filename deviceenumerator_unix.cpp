@@ -59,7 +59,8 @@ QStringList DeviceEnumerator_unix::getRemovableDeviceNames() const
         device = device.trimmed(); // Odd trailing whitespace
 
         if (device.startsWith("/dev/disk")) {
-            QString name = device.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts).first();
+            static const QRegularExpression whitespaceRegex(QStringLiteral("\\s+"));
+            QString name = device.split(whitespaceRegex, Qt::SkipEmptyParts).first();
             // We only want to add USB devics
             if (this->checkIfUSB(name))
                 names << name;
