@@ -148,6 +148,8 @@ macx {
     # use spaces on macOS
     TARGET = "LibreELEC USB-SD Creator"
 
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 12.0
+
     QMAKE_INFO_PLIST = dmg_osx/template.app/Contents/Info.plist
     #QT_CONFIG -= no-pkg-config
     #CONFIG += link_pkgconfig
