@@ -14,6 +14,9 @@ jobs:
         include:
         - os: ubuntu-24.04
           platform: linux
+          useQtAction: true
+          qtArch: linux_gcc_64
+          qtArchives: icu qtbase qtdeclarative qttools
         - os: macos-latest
           platform: macos
           preset: release-macos
@@ -23,6 +26,8 @@ jobs:
           preset: release-msvc
           cpack: true
           useQtAction: true
+          qtArch: win64_msvc2022_64
+          qtArchives: qtbase qtdeclarative qttools opengl32sw d3dcompiler_47
         - os: windows-latest
           platform: windows-mingw
           preset: release-ninja
@@ -44,11 +49,12 @@ jobs:
       if: ${{ matrix.useQtAction }}
       with:
         version: '6.11.1'
-        arch: 'win64_msvc2022_64'
-        archives: 'qtbase qttools opengl32sw d3dcompiler_47'
+        arch: ${{ matrix.qtArch }}
+        archives: ${{ matrix.qtArchives }}
         extra: '--external 7z'
         cache: true
         setup-python: false
+        aqtsource: 'git+https://github.com/miurahr/aqtinstall.git'
     - name: Prepare MSVC environment
       uses: ilammy/msvc-dev-cmd@v1
       if: ${{ matrix.platform == 'windows-msvc' }}

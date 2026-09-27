@@ -114,15 +114,24 @@ if(WIN32)
     )
 
     if(REQUIRE_ADMIN)
-        target_sources(LibreELEC.USB-SD.Creator PUBLIC
-            windows/winapp.rc
-        )
         if(MSVC)
-            set_target_properties(LibreELEC.USB-SD.Creator PROPERTIES
-                LINK_OPTIONS "/MANIFEST:NO" # disable default manifest
+            target_sources(LibreELEC.USB-SD.Creator PRIVATE
+                windows/windows.manifest
             )
+            target_link_options(LibreELEC.USB-SD.Creator PRIVATE
+                "/MANIFESTUAC:NO"
+            )
+            set(RC_MANIFEST_ENTRY "")
+        else()
+            set(RC_MANIFEST_ENTRY "#define MANIFEST_RESOURCE_ID 1\nMANIFEST_RESOURCE_ID RT_MANIFEST \"windows.manifest\"")
         endif()
+    else()
+        set(RC_MANIFEST_ENTRY "")
     endif()
+
+    target_sources(LibreELEC.USB-SD.Creator PUBLIC
+        windows/winapp.rc
+    )
 
     configure_file("windows/winapp.rc.in" "${CMAKE_SOURCE_DIR}/windows/winapp.rc" @ONLY)
 
