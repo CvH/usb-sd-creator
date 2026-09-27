@@ -27,8 +27,8 @@ class DiskWriter_unix : public DiskWriter
 {
     Q_OBJECT
 public:
-    explicit DiskWriter_unix(QObject *parent = 0);
-    ~DiskWriter_unix();
+    explicit DiskWriter_unix(QObject *parent = nullptr);
+    ~DiskWriter_unix() override;
 
 private:
     QFile dev;

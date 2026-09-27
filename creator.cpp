@@ -668,7 +668,7 @@ void Creator::reset(const QString& message)
     QString destination = ui->removableDevicesComboBox->itemData(idx).toString();
     QString file = ui->fileNameLabel->text();
 
-    if (file.isFilled()) {
+    if (!file.isEmpty()) {
         QFileInfo checkFile(file);
         if (!checkFile.exists() || !checkFile.isFile())
             file = "";
@@ -680,7 +680,7 @@ void Creator::reset(const QString& message)
         }
     }
 
-    if (destination.isNull() == false && file.isFilled())
+    if (!destination.isNull() && !file.isEmpty())
         ui->writeFlashButton->setEnabled(true);
     else
         ui->writeFlashButton->setEnabled(false);
@@ -752,7 +752,7 @@ bool Creator::isChecksumValid(const QString checksumSha256)
 {
     checksum = checksumMap[selectedImage];
 
-    if (checksumSha256.isFilled() && checksumSha256 == checksum)
+    if (!checksumSha256.isEmpty() && checksumSha256 == checksum)
         return true;  // checksum calculated at download stage
 
     QByteArray referenceSum, downloadSum;
@@ -1244,7 +1244,7 @@ void Creator::getImageFileNameFromUser()
 
     QString loadDir = settings.value("preferred/savedir", getDefaultSaveDir()).toString();
     // load from previous folder if exist
-    if (ui->fileNameLabel->text().isFilled()) {
+    if (!ui->fileNameLabel->text().isEmpty()) {
         QDir curDir = QFileInfo(ui->fileNameLabel->text()).absoluteDir();
         qDebug() << "curDir" << curDir;
 
@@ -1271,7 +1271,7 @@ void Creator::getImageFileNameFromUser()
 
     int idx = ui->removableDevicesComboBox->currentIndex();
     QString destination = ui->removableDevicesComboBox->itemData(idx).toString();
-    if (destination.isNull() == false && ui->fileNameLabel->text().isFilled())
+    if (!destination.isNull() && !ui->fileNameLabel->text().isEmpty())
         ui->writeFlashButton->setEnabled(true);
     else
         ui->writeFlashButton->setEnabled(false);
@@ -1475,7 +1475,7 @@ void Creator::refreshRemovablesList()
 
     idx = ui->removableDevicesComboBox->currentIndex();
     QString destination = ui->removableDevicesComboBox->itemData(idx).toString();
-    if (destination.isNull() == false && ui->fileNameLabel->text().isFilled())
+    if (!destination.isNull() && !ui->fileNameLabel->text().isEmpty())
         ui->writeFlashButton->setEnabled(true);
     else
         ui->writeFlashButton->setEnabled(false);
