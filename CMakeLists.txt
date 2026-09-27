@@ -98,41 +98,12 @@ target_compile_definitions(LibreELEC.USB-SD.Creator PRIVATE
     $<$<BOOL:${DUMMY_WRITE}>:WINDOWS_DUMMY_WRITE>
 )
 
+file(GLOB TS_FILES CONFIGURE_DEPENDS "lang/lang-*.ts")
 qt_add_translations(LibreELEC.USB-SD.Creator
     RESOURCE_PREFIX
         "/lang"
     TS_FILES
-        lang/lang-ar_SA.ts
-        lang/lang-ast_ES.ts
-        lang/lang-bg_BG.ts
-        lang/lang-cs_CZ.ts
-        lang/lang-da_DK.ts
-        lang/lang-de_DE.ts
-        lang/lang-el_GR.ts
-        lang/lang-en_GB.ts
-        lang/lang-es_ES.ts
-        lang/lang-fa_IR.ts
-        lang/lang-fi_FI.ts
-        lang/lang-fr_FR.ts
-        lang/lang-he_IL.ts
-        lang/lang-hr_HR.ts
-        lang/lang-hu_HU.ts
-        lang/lang-it_IT.ts
-        lang/lang-ko_KR.ts
-        lang/lang-lt_LT.ts
-        lang/lang-nl_NL.ts
-        lang/lang-no_NO.ts
-        lang/lang-pl_PL.ts
-        lang/lang-pt_BR.ts
-        lang/lang-pt_PT.ts
-        lang/lang-ru_RU.ts
-        lang/lang-sk_SK.ts
-        lang/lang-sl_SI.ts
-        lang/lang-sr_RS.ts
-        lang/lang-sv_SE.ts
-        lang/lang-tr_TR.ts
-        lang/lang-uk_UA.ts
-        lang/lang-zh_CN.ts
+        ${TS_FILES}
 )
 
 if(WIN32)
