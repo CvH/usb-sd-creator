@@ -124,8 +124,8 @@ aqt list-qt linux desktop --arch 6.11.1
 Install the required packages:
 
 ```
-aqt install-qt --outputdir %UserProfile%/Qt windows desktop 6.11.1 win64_msvc2019_64 --archives qtbase qttools opengl32sw d3dcompiler_47 --external 7z.exe
-aqt install-qt --outputdir %UserProfile%/Qt windows desktop 6.11.1 win64_msvc2019_64 --modules debug_info --external 7z.exe
+aqt install-qt --outputdir %UserProfile%/Qt windows desktop 6.11.1 win64_msvc2022_64 --archives qtbase qttools opengl32sw d3dcompiler_47 --external 7z.exe
+aqt install-qt --outputdir %UserProfile%/Qt windows desktop 6.11.1 win64_msvc2022_64 --modules debug_info --external 7z.exe
 ```
 
 #### Install Visual Studio Community 2022
@@ -150,13 +150,13 @@ cd %UserProfile%/usb-sd-creator
 #### Debug build
 
 ```
-cmake -S . -B build -D CMAKE_PREFIX_PATH="%UserProfile%/Qt/6.11.1/msvc2019_64" && cmake --build build
+cmake -S . -B build -D CMAKE_PREFIX_PATH="%UserProfile%/Qt/6.11.1/msvc2022_64" && cmake --build build
 ```
 
 #### Release build
 
 ```
-cmake --preset release-msvc -D CMAKE_PREFIX_PATH="%UserProfile%/Qt/6.11.1/msvc2019_64" && cmake --build --preset release
+cmake --preset release-msvc -D CMAKE_PREFIX_PATH="%UserProfile%/Qt/6.11.1/msvc2022_64" && cmake --build --preset release
 ```
 
 ### 4. Build Installer
