@@ -43,8 +43,8 @@ QNetworkReply* DownloadManager::get(const QUrl &url)
 {
     QNetworkRequest req(url);
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
-    req.setRawHeader("User-Agent", "Wget/1.14 (linux-gnu)");
-    req.setRawHeader("Connection", "keep-alive");
+    req.setRawHeader(QByteArrayLiteral("User-Agent"), QByteArrayLiteral("Wget/1.14 (linux-gnu)"));
+    req.setRawHeader(QByteArrayLiteral("Connection"), QByteArrayLiteral("keep-alive"));
     qDebug() << "Getting" << url;
 
     latestReply = manager->get(req);
