@@ -795,7 +795,7 @@ unsigned int Creator::getUncompressedImageSize()
 #endif
     if (file == nullptr)
     {
-        emit error("Couldn't open " + imageFile.fileName());
+        qDebug() << "Couldn't open" << imageFile.fileName();
         return 0;
     }
 
