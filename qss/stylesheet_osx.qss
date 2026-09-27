@@ -1,6 +1,6 @@
 /*******************************************************************************
 *      This file is part of LibreELEC - http://www.libreelec.tv
-*      Copyright (C) 2016 Team LibreELEC
+*      Copyright (C) 2016-Present Team LibreELEC
 *
 *  LibreELEC is free software: you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
@@ -11,65 +11,347 @@
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *  GNU General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-QProgressBar {
-  background-color: #F0F0F0;
-  margin: 1px;
-  border: 1px solid #ABABAB;
-  border-radius: 2px;
+QWidget {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+    font-size: 10pt;
 }
 
-QProgressBar::chunk {
-  background-color: #99DFFF;  /* librelec color 00A9F6 */
-  margin: 1.5px;
+QDialog#Creator {
+    background-color: #ffffff;
 }
 
-QLineEdit {
-  padding-left: 5px;
-  padding-right: 5px;
+QStackedWidget#stackedWidget {
+    background-color: #ffffff;
 }
 
-/* from http://stackoverflow.com/questions/29939990/qcombobox-style-for-choosed-item-in-drop-down-list
-   OS X fix https://github.com/xPoke/MetroMumble/blob/master/OSX/OSX%20Dark.qss */
+QWidget#pageMain, QWidget#pageAbout {
+    background-color: #ffffff;
+}
+
+/* Header Decorator Dots */
+QLabel#dotRed {
+    background-color: #ff5f56;
+    border-radius: 5px;
+    min-width: 10px;
+    max-width: 10px;
+    min-height: 10px;
+    max-height: 10px;
+}
+
+QLabel#dotYellow {
+    background-color: #ffbd2e;
+    border-radius: 5px;
+    min-width: 10px;
+    max-width: 10px;
+    min-height: 10px;
+    max-height: 10px;
+}
+
+QLabel#dotGreen {
+    background-color: #27c93f;
+    border-radius: 5px;
+    min-width: 10px;
+    max-width: 10px;
+    min-height: 10px;
+    max-height: 10px;
+}
+
+QLabel#titleLabel {
+    font-family: "SF Mono", "Consolas", monospace;
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #475569;
+    background: transparent;
+}
+
+/* Section Header Labels */
+QLabel#labelStep1, QLabel#labelStep3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #475569;
+    letter-spacing: 0.5px;
+    background: transparent;
+}
+
+/* Status and Verified Labels */
+QLabel#labelStatus {
+    font-family: "SF Mono", "Consolas", monospace;
+    font-size: 9.5pt;
+    font-weight: 500;
+    color: #475569;
+    background: transparent;
+}
+
+QLabel#labelVerified {
+    font-family: "SF Mono", "Consolas", monospace;
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #059669;
+    background: transparent;
+}
+
+/* Comboboxes */
 QComboBox {
-  font-size: 11pt;
-  margin: 0;
-  padding: 4px;
-  min-height: 1em;
-  selection-color: green;
-  color: black;
-}
-
-QComboBox:on {
-  color: #00A9F6;
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding-left: 14px;
+    padding-right: 32px;
+    min-height: 42px;
+    max-height: 44px;
+    color: #0f172a;
+    font-size: 10pt;
+    font-weight: 600;
 }
 
 QComboBox:hover {
-  padding-left: 4px; /* this makes text colour work */
-  color: rgb(250,169,31);
+    border: 1.5px solid #93c5fd;
+    background-color: #ffffff;
 }
 
-QMenu::item:checked {
-  color: red;
-  background: orange;
+QComboBox:focus, QComboBox:on {
+    border: 1.5px solid #0284c7;
+    background-color: #ffffff;
 }
 
-QPushButton {
-  padding-left: 8px;
-  padding-right: 8px;
-  min-height: 23px;  /* same as in Creator */
+QComboBox:disabled {
+    background-color: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    color: #94a3b8;
 }
 
-QPushButton:focus {
-  padding-left: 0px;
-  padding-right: 0px;
-  color: rgb(0,169,246);
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 32px;
+    border-left: none;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
-QPushButton:hover {
-  color: rgb(250,169,31);
+QComboBox::down-arrow {
+    image: url(:/icons/chevron_down.png);
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 6px;
+    selection-background-color: #e0f2fe;
+    selection-color: #0284c7;
+    color: #0f172a;
+    font-size: 9.5pt;
+    outline: none;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 30px;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    font-weight: 600;
+}
+
+/* Progress Bars */
+QProgressBar {
+    background-color: #e2e8f0;
+    border: none;
+    border-radius: 4px;
+    min-height: 8px;
+    max-height: 8px;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0284c7, stop:0.5 #06b6d4, stop:1 #10b981);
+    border-radius: 4px;
+}
+
+/* Primary Action Button (Write Flash) */
+QPushButton#writeFlashButton {
+    background-color: #026aa7;
+    border: none;
+    border-radius: 14px;
+    color: #ffffff;
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    min-height: 48px;
+    padding: 0px 20px;
+}
+
+QPushButton#writeFlashButton:hover {
+    background-color: #0284c7;
+}
+
+QPushButton#writeFlashButton:pressed {
+    background-color: #035388;
+}
+
+QPushButton#writeFlashButton:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+}
+
+/* Secondary Action Buttons (Download, Load) */
+QPushButton#downloadButton {
+    background-color: #f0f9ff;
+    border: 1.5px solid #0284c7;
+    border-radius: 8px;
+    color: #0284c7;
+    font-size: 9pt;
+    font-weight: 600;
+    min-height: 32px;
+    padding: 0px 12px;
+}
+
+QPushButton#downloadButton:hover {
+    background-color: #0284c7;
+    color: #ffffff;
+}
+
+QPushButton#downloadButton:disabled {
+    border-color: #e2e8f0;
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+
+QPushButton#loadButton {
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    color: #475569;
+    font-size: 9pt;
+    font-weight: 600;
+    min-height: 32px;
+    padding: 0px 12px;
+}
+
+QPushButton#loadButton:hover {
+    border-color: #94a3b8;
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+/* File Name Display */
+QLineEdit#fileNameLabel {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 9pt;
+    padding: 4px 10px;
+    min-height: 22px;
+}
+
+/* Tool Button (Refresh) */
+QToolButton#refreshRemovablesButton {
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 28px;
+    min-height: 28px;
+    max-width: 28px;
+    max-height: 28px;
+}
+
+QToolButton#refreshRemovablesButton:hover {
+    border-color: #0284c7;
+    background-color: #f0f9ff;
+}
+
+/* Checkbox (Show all) */
+QCheckBox {
+    color: #64748b;
+    font-size: 9pt;
+    font-weight: 500;
+    spacing: 6px;
+    background: transparent;
+}
+
+QCheckBox:hover {
+    color: #1e293b;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid #cbd5e1;
+    background-color: #ffffff;
+}
+
+QCheckBox::indicator:hover {
+    border-color: #0284c7;
+}
+
+QCheckBox::indicator:checked {
+    border-color: #0284c7;
+    background-color: #0284c7;
+    image: url(:/icons/chevron_down.png);
+}
+
+/* Bottom Bar Ghost Buttons */
+QPushButton#showAboutButton, QPushButton#helpButton, QPushButton#closeAppButton, QPushButton#closeAboutButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #64748b;
+    font-size: 9pt;
+    font-weight: 600;
+    min-height: 28px;
+    padding: 0px 10px;
+}
+
+QPushButton#showAboutButton:hover, QPushButton#helpButton:hover, QPushButton#closeAppButton:hover, QPushButton#closeAboutButton:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+/* Language Button & Menu */
+QPushButton#langButton {
+    background-color: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 2px 6px;
+    min-height: 24px;
+}
+
+QPushButton#langButton:hover {
+    border-color: #0284c7;
+    background-color: #f0f9ff;
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 6px;
+    color: #0f172a;
+}
+
+QMenu::item {
+    padding: 6px 20px 6px 12px;
+    border-radius: 6px;
+    font-size: 9.5pt;
+}
+
+QMenu::item:selected {
+    background-color: #e0f2fe;
+    color: #0284c7;
 }

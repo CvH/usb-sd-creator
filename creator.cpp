@@ -74,6 +74,7 @@ Creator::Creator(Privileges &privilegesArg, QWidget *parent) :
     restoreGeometry(settings.value("window/geometry").toByteArray());
 
     ui->setupUi(this);
+    setFixedSize(640, 500);
 
 #ifdef Q_OS_MACOS
     auto fontAbout = ui->labelAbout->font();
@@ -311,6 +312,20 @@ void Creator::retranslateUi()
 {
     // retranslate dynamic texts
     ui->labelVersion->setText(tr("Version: %1\nBuild date: %2").arg(QLatin1String{BUILD_VERSION}, QLatin1String{BUILD_DATE}));
+    ui->titleLabel->setText(QString("LibreELEC USB-SD Creator v%1").arg(QLatin1String{BUILD_VERSION}));
+    ui->labelStep1->setText(tr("1. SELECT VERSION"));
+    ui->labelStep3->setText(tr("2. TARGET USB/SD DRIVE"));
+    ui->downloadButton->setText(tr("&Download"));
+    ui->loadButton->setText(tr("Select &file"));
+
+    if (state == STATE_WRITING_IMAGE) {
+        ui->writeFlashButton->setIcon(QIcon());
+        ui->writeFlashButton->setText(tr("✕ Cancel"));
+    } else {
+        ui->writeFlashButton->setIcon(QIcon(":/icons/lightning.png"));
+        ui->writeFlashButton->setIconSize(QSize(16, 16));
+        ui->writeFlashButton->setText(tr("WRITE IMAGE TO DRIVE"));
+    }
 
     ui->labelAbout->setText(QString("<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\"><h2>&copy; LibreELEC %8</h2></span></p><p align=\"center\">%1<br/>%2</p><p align=\"center\">%3<br/><a href=\"https://github.com/LibreELEC/usb-sd-creator\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/LibreELEC/usb-sd-creator</span></a><br/></p><p align=\"center\">%4<br/>%5</p><p align=\"center\">%6<br/>%7 <br/><br/><a href=\"https://opencollective.com/libreelec/donate\"><img src=\":/icons/opencollective.png\"></a></p></body></html>") \
           .arg(tr("This software was created with love and released"))
@@ -460,7 +475,19 @@ void Creator::downloadProgressBarText(const QString &text = "")
     ui->downloadProgressBar->setFormat("   " + text);
     ui->downloadProgressBar->repaint();
     ui->downloadProgressBar->update();
-    //qApp->processEvents();  // don't use this (signals lost and boooom)
+    if (text.isEmpty()) {
+        int idx = ui->removableDevicesComboBox->currentIndex();
+        QString destination = ui->removableDevicesComboBox->itemData(idx).toString();
+        if (!destination.isNull() && ui->fileNameLabel->text().isFilled()) {
+            ui->labelStatus->setText(tr("Status: Ready to write..."));
+            ui->labelVerified->setText(tr("100% Verified"));
+        } else {
+            ui->labelStatus->setText(tr("Status: Ready"));
+            ui->labelVerified->setText("");
+        }
+    } else {
+        ui->labelStatus->setText(QString("Status: %1").arg(text));
+    }
 }
 
 void Creator::flashProgressBarText(const QString &text = "")
@@ -468,7 +495,19 @@ void Creator::flashProgressBarText(const QString &text = "")
     ui->flashProgressBar->setFormat("   " + text);
     ui->flashProgressBar->repaint();
     ui->flashProgressBar->update();
-    //qApp->processEvents();
+    if (text.isEmpty()) {
+        int idx = ui->removableDevicesComboBox->currentIndex();
+        QString destination = ui->removableDevicesComboBox->itemData(idx).toString();
+        if (!destination.isNull() && ui->fileNameLabel->text().isFilled()) {
+            ui->labelStatus->setText(tr("Status: Ready to write..."));
+            ui->labelVerified->setText(tr("100% Verified"));
+        } else {
+            ui->labelStatus->setText(tr("Status: Ready"));
+            ui->labelVerified->setText("");
+        }
+    } else {
+        ui->labelStatus->setText(QString("Status: %1").arg(text));
+    }
 }
 
 void Creator::parseJsonAndSet(const QByteArray &data)
@@ -685,7 +724,10 @@ void Creator::reset(const QString& message)
     else
         ui->writeFlashButton->setEnabled(false);
 
-    ui->writeFlashButton->setText(tr("&Write"));
+    ui->writeFlashButton->setIcon(QIcon(":/icons/lightning.png"));
+    ui->writeFlashButton->setIconSize(QSize(16, 16));
+    ui->writeFlashButton->setText(tr("WRITE IMAGE TO DRIVE"));
+    ui->downloadProgressBar->setVisible(false);
 
     if (message.isNull() == false) {
         if (state == STATE_DOWNLOADING_IMAGE) {
@@ -938,6 +980,7 @@ void Creator::setImageFileName(QString filename)
         filename = filename.left(filename.lastIndexOf("."));
 
     ui->fileNameLabel->setText(filename);
+    flashProgressBarText("");
 }
 
 QString Creator::getDefaultSaveDir()
@@ -1229,6 +1272,7 @@ void Creator::downloadButtonClicked()
     settings.setValue("preferred/savedir", saveDir);
     savePreferredImage(selectedImage);
 
+    ui->downloadProgressBar->setVisible(true);
     manager->get(url);
     speedTime.start();
     averageSpeed = new MovingAverage(50);
@@ -1370,7 +1414,7 @@ void Creator::writeFlashButtonClicked()
     state = STATE_WRITING_IMAGE;
     privileges.SetRoot();    // root need for opening a device
 
-    ui->writeFlashButton->setText(tr("Cance&l"));
+    ui->writeFlashButton->setText(tr("✕ Cancel"));
     emit proceedToWriteImageToDevice(imageFile.fileName(), destination, destinationText);
 
     speedTime.start();
@@ -1395,6 +1439,7 @@ void Creator::writingFinished()
         reset();
         resetProgressBars();
         flashProgressBarText(tr("Writing done!"));
+        ui->labelVerified->setText(tr("100% Verified"));
         delete averageSpeed;
         state = STATE_IDLE;
     }
@@ -1458,7 +1503,7 @@ void Creator::refreshRemovablesList()
     for (int i = 0; i < devNames.size(); i++) {
         // add only real drives (not empty readers)
         if (friendlyNames[i].compare(devNames[i]) != 0)
-            ui->removableDevicesComboBox->addItem(friendlyNames[i], devNames[i]);
+            ui->removableDevicesComboBox->addItem(QIcon(":/icons/sd_card.png"), friendlyNames[i], devNames[i]);
     }
 
     int idx = ui->removableDevicesComboBox->findData(previouslySelectedDevice,
@@ -1515,6 +1560,7 @@ void Creator::handleWriteProgress(int written)
     int percentage = ((double) written) / uncompressedImageSize * 100;
 
     flashProgressBarText(tr("%1 seconds remaining - %2% at %3").arg(timeText, QString::number(percentage), speedText));
+    ui->labelVerified->setText(QString::number(percentage) + "%");
 
     speedTime.restart();   // start again to get current speed
 }
