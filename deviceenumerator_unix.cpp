@@ -41,7 +41,7 @@ QStringList DeviceEnumerator_unix::getRemovableDeviceNames() const
 #ifdef Q_OS_LINUX
     names = getDeviceNamesFromSysfs();
 
-    foreach (QString device, names) {
+    for (const QString &device : names) {
         // show all devices but unmount it before writing
         //if (! checkIsMounted(device))
             unmounted << "/dev/"+device;
@@ -77,7 +77,7 @@ QStringList DeviceEnumerator_unix::getUserFriendlyNames(const QStringList &devic
     QStringList returnList;
 
 #ifdef Q_OS_LINUX
-    foreach (QString device, devices) {
+    for (QString device : devices) {
         qint64 size = getSizeOfDevice(device);
         QStringList partInfo = getPartitionsInfo(device);
 
@@ -91,8 +91,9 @@ QStringList DeviceEnumerator_unix::getUserFriendlyNames(const QStringList &devic
 
         if (partInfo.size() > 0) {
             friendlyName << " (partitions: ";
-            foreach (QString partition, partInfo)
+            for (const QString &partition : partInfo) {
                 friendlyName << partition << ", ";
+            }
 
             device.chop(2);
             friendlyName << ")";
@@ -105,7 +106,7 @@ QStringList DeviceEnumerator_unix::getUserFriendlyNames(const QStringList &devic
 
     return returnList;
 #else
-    foreach (QString device, devices) {
+    for (const QString &device : devices) {
         QString item = device;
         QString label;
         QProcess lsblk;
@@ -277,7 +278,7 @@ QStringList DeviceEnumerator_unix::getDeviceNamesFromSysfs() const
     currentDir.setFilter(QDir::Dirs);
 
     QStringList entries = currentDir.entryList();
-    foreach (QString device, entries) {
+    for (const QString &device : entries) {
         // Skip "." and ".." dir entries
         if (device == "." || device == "..")
             continue;

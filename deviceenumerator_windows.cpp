@@ -57,7 +57,7 @@ QStringList DeviceEnumerator_windows::getUserFriendlyNames(const QStringList &de
     return names;
 #endif
 
-    foreach (const QString &dev, devices) {
+    for (const QString &dev : devices) {
         qint64 size = getSizeOfDevice(dev);
         QString label = getLabelOfDevice(dev);
         if (label.isEmpty())

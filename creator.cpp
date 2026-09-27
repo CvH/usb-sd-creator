@@ -365,7 +365,7 @@ void Creator::dragEnterEvent(QDragEnterEvent *event)
 
 void Creator::dropEvent(QDropEvent *event)
 {
-    foreach (const QUrl &url, event->mimeData()->urls()) {
+    for (const QUrl &url : event->mimeData()->urls()) {
         QString file = url.toLocalFile();
         QFileInfo infoFile(file);
         file = infoFile.absoluteFilePath();
