@@ -39,9 +39,6 @@
 #include "privileges.h"
 #endif
 
-// useful macro
-#define isFilled()  isEmpty() == false
-
 class QThread;
 class DiskWriter;
 class DeviceEnumerator;
@@ -55,8 +52,8 @@ class Creator : public QDialog
     Q_OBJECT
 
 public:
-    explicit Creator(Privileges &priv, QWidget *parent = 0);
-    ~Creator();
+    explicit Creator(Privileges &priv, QWidget *parent = nullptr);
+    ~Creator() override;
     void setArgFile(QString argFile);
     void retranslateUi();
 

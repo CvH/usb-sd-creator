@@ -28,8 +28,8 @@ class DiskWriter_windows : public DiskWriter
 {
     Q_OBJECT
 public:
-    explicit DiskWriter_windows(QObject *parent = 0);
-    ~DiskWriter_windows();
+    explicit DiskWriter_windows(QObject *parent = nullptr);
+    ~DiskWriter_windows() override;
 
     static QString errorAsString(DWORD error);
 

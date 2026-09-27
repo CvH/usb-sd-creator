@@ -130,7 +130,7 @@ void Translator::languageAction(QAction *action)
 
     langBtn->setIcon(action->icon());
 
-    if (qtranslator->isFilled())
+    if (!qtranslator->isEmpty())
         qApp->removeTranslator(qtranslator);
 
     bool loaded = false;
@@ -139,7 +139,7 @@ void Translator::languageAction(QAction *action)
     else
         loaded = qtranslator->load("lang-" + locale + ".qm");
 
-    if (loaded && qtranslator->isFilled())
+    if (loaded && !qtranslator->isEmpty())
         qApp->installTranslator(qtranslator);
 
     // clear checked status

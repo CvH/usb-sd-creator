@@ -26,16 +26,13 @@
 #include <QPushButton>
 #include <QSettings>
 
-// useful macro
-#define isFilled()  isEmpty() == false
-
 class Translator : public QObject
 {
     Q_OBJECT
 
 public:
-    Translator(QObject *parent = 0, QSettings *set = 0);
-    ~Translator();
+    explicit Translator(QObject *parent = nullptr, QSettings *set = nullptr);
+    ~Translator() override;
     void fillLanguages(QMenu *menuPtr, QPushButton *langBtnPtr);
 
 private:
