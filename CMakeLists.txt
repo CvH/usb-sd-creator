@@ -20,6 +20,10 @@ include(GNUInstallDirs)
 # GNU dirs must be adjusted before finding Qt for qt_deploy_runtime_dependencies to use customzied vars
 if(WIN32)
     set(CMAKE_INSTALL_BINDIR .)
+elseif(APPLE)
+    if(NOT CMAKE_OSX_DEPLOYMENT_TARGET)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum macOS version to target")
+    endif()
 endif()
 
 # options
