@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.25)
 project(LibreELEC.USB-SD.Creator
     VERSION 1.5
     LANGUAGES CXX
@@ -7,10 +7,6 @@ project(LibreELEC.USB-SD.Creator
 
 set(projectDisplayName "LibreELEC USB-SD Creator")
 
-# LINUX is available only since CMake 3.25
-if (NOT LINUX AND UNIX AND NOT APPLE)
-    set(LINUX 1)
-endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
