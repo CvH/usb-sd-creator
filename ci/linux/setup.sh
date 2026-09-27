@@ -5,12 +5,12 @@ sudo apt update -y
 sudo apt install -y cmake \
   gcc \
   g++ \
+  p7zip-full \
   libgl1-mesa-dev \
-  qt6-base-dev \
-  qt6-l10n-tools \
-  qt6-tools-dev \
-  qt6-tools-dev-tools \
-  qt6-wayland-dev \
+  libxkbcommon-x11-0 \
+  libxkbcommon-dev \
+  libdbus-1-dev \
+  zlib1g-dev \
 
 echo "CC=gcc" >> $GITHUB_ENV
 echo "CXX=g++" >> $GITHUB_ENV

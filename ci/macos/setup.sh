@@ -17,7 +17,7 @@ else
 fi
 
 cd ..
-$AQT install-qt mac desktop "$qtVersion" clang_64 --outputdir "$PWD" --archives qtbase qttools
+$AQT install-qt mac desktop "$qtVersion" clang_64 --outputdir "$PWD" --archives qtbase qtdeclarative qttools
 
 qtDir=$(find "$PWD/$qtVersion" -maxdepth 2 -type d \( -name "macos" -o -name "clang_64" \) 2>/dev/null | head -n 1)
 if [ -z "$qtDir" ]; then
