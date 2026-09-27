@@ -159,7 +159,8 @@ linux* {
     # manually add suffix 32/64
     TARGET = LibreELEC.USB-SD.Creator.Linux-bit.bin
 
-    QMAKE_CXXFLAGS += -std=c++11
+    CONFIG += c++17
+    QMAKE_CXXFLAGS += -std=c++17
 
     LIBS += -lblkid
 }
