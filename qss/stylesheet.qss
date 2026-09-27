@@ -95,7 +95,7 @@ QLabel#labelVerified {
 
 /* Comboboxes */
 QComboBox {
-    background-color: #ffffff;
+    background-color: #f8fafc;
     border: 1.5px solid #e2e8f0;
     border-radius: 12px;
     padding-left: 14px;
@@ -109,12 +109,12 @@ QComboBox {
 
 QComboBox:hover {
     border: 1.5px solid #93c5fd;
-    background-color: #ffffff;
+    background-color: #f8fafc;
 }
 
 QComboBox:focus, QComboBox:on {
     border: 1.5px solid #0284c7;
-    background-color: #ffffff;
+    background-color: #f8fafc;
 }
 
 QComboBox:disabled {
@@ -127,6 +127,7 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 32px;
+    background: transparent;
     border-left: none;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
@@ -139,7 +140,7 @@ QComboBox::down-arrow {
 }
 
 QComboBox QAbstractItemView {
-    background-color: #ffffff;
+    background-color: #f8fafc;
     border: 1.5px solid #cbd5e1;
     border-radius: 10px;
     padding: 6px;
@@ -328,7 +329,7 @@ QPushButton#langButton:hover {
 }
 
 QMenu {
-    background-color: #ffffff;
+    background-color: #f8fafc;
     border: 1px solid #cbd5e1;
     border-radius: 10px;
     padding: 6px;
