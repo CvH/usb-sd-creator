@@ -49,7 +49,7 @@ void Translator::fillLanguages(QMenu *menuPtr, QPushButton *langBtnPtr)
 
     // add menu entry for all the files
     QList<QAction *> actions;
-    foreach (const QString &qmFile, qmFiles) {
+    for (const QString &qmFile : qmFiles) {
         QRegularExpression regExp = QRegularExpression("lang-(.*)\\.qm");
         QRegularExpressionMatch match = regExp.match(qmFile);
         QString locale = match.captured(1);
