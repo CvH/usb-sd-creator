@@ -6,6 +6,7 @@ sudo apt install -y cmake \
   gcc \
   g++ \
   p7zip-full \
+  patchelf \
   libgl1-mesa-dev \
   libxkbcommon-x11-0 \
   libxkbcommon-dev \

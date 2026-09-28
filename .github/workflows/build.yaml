@@ -63,6 +63,13 @@ jobs:
         cache: true
         setup-python: false
         aqtsource: 'git+https://github.com/miurahr/aqtinstall.git'
+
+    - name: Install linuxdeploy
+      id: install-linuxdeploy
+      uses: miurahr/install-linuxdeploy-action@v1.8.0
+      if: ${{ matrix.platform == 'linux' }}
+      with:
+        plugins: qt appimage
     - name: Prepare MSVC environment
       uses: TheMrMilchmann/setup-msvc-dev@v4
       if: ${{ matrix.platform == 'windows-msvc' }}
@@ -109,6 +116,32 @@ jobs:
       if: ${{ matrix.platform == 'linux' }}
       run: |
         cp build/LibreELEC.USB-SD.Creator.Linux.bin build/cpack/
+
+    - name: Build Linux AppImage
+      if: ${{ matrix.platform == 'linux' }}
+      env:
+        APPIMAGE_EXTRACT_AND_RUN: 1
+        NO_STRIP: "true"
+      run: |
+        export QMAKE="${QT_ROOT_DIR}/bin/qmake"
+        [ -x "$QMAKE" ] || export QMAKE="$(which qmake)"
+        export LD_LIBRARY_PATH="${QT_ROOT_DIR}/lib:${LD_LIBRARY_PATH}"
+
+        mkdir -p build/cpack
+        cmake --install build --prefix AppDir/usr
+        ln -sf LibreELEC.USB-SD.Creator.Linux.bin AppDir/usr/bin/LibreELEC.USB-SD.Creator
+        chmod +x AppDir/usr/bin/*
+
+        ${{ steps.install-linuxdeploy.outputs.linuxdeploy }} \
+          --appdir AppDir \
+          --executable AppDir/usr/bin/LibreELEC.USB-SD.Creator.Linux.bin \
+          --desktop-file AppDir/usr/share/applications/LibreELEC.USB-SD.Creator.desktop \
+          --icon-file AppDir/usr/share/icons/hicolor/256x256/apps/LibreELEC.USB-SD.Creator.png \
+          --plugin qt \
+          --output appimage
+
+        mv LibreELEC*.AppImage build/cpack/LibreELEC.USB-SD.Creator.Linux.x86_64.AppImage || mv *.AppImage build/cpack/LibreELEC.USB-SD.Creator.Linux.x86_64.AppImage
+
     - name: Artifact
       uses: actions/upload-artifact@v6
       with:
