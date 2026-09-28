@@ -33,11 +33,11 @@ public:
 private:
     QFile dev;
 
-    bool open(const QString &device);
-    void close();
-    void sync();
-    bool isOpen();
-    bool write(const QByteArray &data);
+    bool open(const QString &device) override;
+    void close() override;
+    void sync() override;
+    bool isOpen() override;
+    bool write(const QByteArray &data) override;
 };
 
 #endif // DISKWRITER_UNIX_H
