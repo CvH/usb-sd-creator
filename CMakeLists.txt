@@ -184,6 +184,14 @@ elseif(LINUX)
     target_link_libraries(LibreELEC.USB-SD.Creator PUBLIC
         Qt${QT_VERSION_MAJOR}::DBus
     )
+
+    install(FILES "linux/LibreELEC.USB-SD.Creator.desktop"
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
+    )
+    install(FILES "icons/le_icon_256.png"
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps"
+        RENAME "LibreELEC.USB-SD.Creator.png"
+    )
 endif()
 
 # install
@@ -191,7 +199,7 @@ install(TARGETS LibreELEC.USB-SD.Creator
     BUNDLE
         DESTINATION .
     RUNTIME
-        DESTINATION .
+        DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 if(qtDeployExecutable)
     qt_generate_deploy_script(
