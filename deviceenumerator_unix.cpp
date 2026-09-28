@@ -107,8 +107,7 @@ QStringList DeviceEnumerator_unix::getUserFriendlyNames(const QStringList &devic
 
     return returnList;
 #else
-    for (const QString &device : devices) {
-        QString item = device;
+    for (QString device : devices) {
         QString label;
         QProcess lsblk;
         QString output;
