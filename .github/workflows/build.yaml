@@ -14,7 +14,6 @@ jobs:
         include:
         - os: ubuntu-24.04
           platform: linux
-          cpack: true
           useQtAction: true
           qtArch: linux_gcc_64
           qtArchives: icu qtbase qtdeclarative qttools
@@ -64,12 +63,6 @@ jobs:
         setup-python: false
         aqtsource: 'git+https://github.com/miurahr/aqtinstall.git'
 
-    - name: Install linuxdeploy
-      id: install-linuxdeploy
-      uses: miurahr/install-linuxdeploy-action@v1.8.0
-      if: ${{ matrix.platform == 'linux' }}
-      with:
-        plugins: qt appimage
     - name: Prepare MSVC environment
       uses: TheMrMilchmann/setup-msvc-dev@v4
       if: ${{ matrix.platform == 'windows-msvc' }}
@@ -112,10 +105,6 @@ jobs:
       if: ${{ runner.os == 'Windows' }}
       run: |
         cpack --preset release -G ZIP
-    - name: Copy Linux binary to cpack
-      if: ${{ matrix.platform == 'linux' }}
-      run: |
-        cp build/LibreELEC.USB-SD.Creator.Linux.bin build/cpack/
 
     - name: Build Linux AppImage
       if: ${{ matrix.platform == 'linux' }}
@@ -132,7 +121,7 @@ jobs:
         ln -sf LibreELEC.USB-SD.Creator.Linux.bin AppDir/usr/bin/LibreELEC.USB-SD.Creator
         chmod +x AppDir/usr/bin/*
 
-        ${{ steps.install-linuxdeploy.outputs.linuxdeploy }} \
+        linuxdeploy \
           --appdir AppDir \
           --executable AppDir/usr/bin/LibreELEC.USB-SD.Creator.Linux.bin \
           --desktop-file AppDir/usr/share/applications/LibreELEC.USB-SD.Creator.desktop \
