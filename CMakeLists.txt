@@ -190,6 +190,8 @@ endif()
 install(TARGETS LibreELEC.USB-SD.Creator
     BUNDLE
         DESTINATION .
+    RUNTIME
+        DESTINATION .
 )
 if(qtDeployExecutable)
     qt_generate_deploy_script(
@@ -235,5 +237,8 @@ elseif(APPLE)
     set(CPACK_DMG_VOLUME_NAME "${projectDisplayName}")
 
     configure_file("macos/dmg_osx/DS_Store_Setup.scpt.in" "${CPACK_DMG_DS_STORE_SETUP_SCRIPT}" @ONLY)
+elseif(LINUX)
+    set(CPACK_PACKAGE_FILE_NAME "LibreELEC.USB-SD.Creator.Linux")
+    set(CPACK_GENERATOR TGZ)
 endif()
 include(CPack)
