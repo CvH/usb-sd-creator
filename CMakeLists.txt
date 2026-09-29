@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
+if(POLICY CMP0207)
+    cmake_policy(SET CMP0207 NEW)
+endif()
 project(LibreELEC.USB-SD.Creator
     VERSION 1.5
     LANGUAGES CXX
@@ -142,6 +145,37 @@ if(WIN32)
             file(REMOVE \"\\\${QT_DEPLOY_PREFIX}/\\\${QT_DEPLOY_BIN_DIR}/\\\${dll}.dll\")
         endforeach()
     ")
+    if(MINGW)
+        get_filename_component(MINGW_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        string(APPEND qtDeployExtraCommands "
+        # Deploy MinGW / MSYS2 runtime dependencies
+        file(GLOB_RECURSE _deployed_plugins LIST_DIRECTORIES false \"\\\${QT_DEPLOY_PREFIX}/\\\${QT_DEPLOY_PLUGINS_DIR}/*.dll\")
+        if(_deployed_plugins)
+            set(_plugin_libs LIBRARIES \\\${_deployed_plugins})
+        else()
+            set(_plugin_libs \"\")
+        endif()
+        if(POLICY CMP0207)
+            cmake_policy(SET CMP0207 NEW)
+        endif()
+        file(GET_RUNTIME_DEPENDENCIES
+            RESOLVED_DEPENDENCIES_VAR _resolved_deps
+            UNRESOLVED_DEPENDENCIES_VAR _unresolved_deps
+            CONFLICTING_DEPENDENCIES_PREFIX _conflicts
+            EXECUTABLES \"\\\${QT_DEPLOY_PREFIX}/\\\${QT_DEPLOY_BIN_DIR}/${qtDeployExecutable}\"
+            \\\${_plugin_libs}
+            DIRECTORIES \"${MINGW_BIN_DIR}\"
+            POST_EXCLUDE_REGEXES \"^[aA][pP][iI]-[mM][sS]-[wW][iI][nN]\" \"^[eE][xX][tT]-[mM][sS]-[wW][iI][nN]\"
+        )
+        foreach(_dep IN LISTS _resolved_deps)
+            file(TO_CMAKE_PATH \"\\\${_dep}\" _dep_norm)
+            string(TOLOWER \"\\\${_dep_norm}\" _dep_lower)
+            if(NOT _dep_lower MATCHES \"^[a-z]:/windows/\")
+                file(INSTALL DESTINATION \"\\\${QT_DEPLOY_PREFIX}/\\\${QT_DEPLOY_BIN_DIR}\" TYPE FILE FILES \"\\\${_dep}\")
+            endif()
+        endforeach()
+        ")
+    endif()
 elseif(APPLE)
     set_target_properties(LibreELEC.USB-SD.Creator PROPERTIES
         OUTPUT_NAME "${projectDisplayName}"
@@ -202,6 +236,11 @@ install(TARGETS LibreELEC.USB-SD.Creator
         DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 if(qtDeployExecutable)
+    set(compilerRuntimeFlag "")
+    if(NOT MINGW)
+        set(compilerRuntimeFlag "NO_COMPILER_RUNTIME")
+    endif()
+
     qt_generate_deploy_script(
         TARGET LibreELEC.USB-SD.Creator
         OUTPUT_SCRIPT qtDeployScript
@@ -210,7 +249,7 @@ if(qtDeployExecutable)
                 EXECUTABLE \"${qtDeployExecutable}\"
                 GENERATE_QT_CONF
                 NO_APP_STORE_COMPLIANCE
-                NO_COMPILER_RUNTIME
+                ${compilerRuntimeFlag}
                 NO_TRANSLATIONS
                 VERBOSE
             )
