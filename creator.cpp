@@ -159,8 +159,16 @@ Creator::Creator(Privileges &privilegesArg, QWidget *parent) :
     // if there is any change then list is changed and current device removed
     timerId = startTimer(timerValue);
 
-    // set Fusion style
-    QApplication::setStyle(QStyleFactory::create("Fusion"));
+    // ensure Fusion style and standard light palette
+    if (!QApplication::style() || QApplication::style()->objectName().compare(QLatin1String("fusion"), Qt::CaseInsensitive) != 0) {
+        QStyle *fusionStyle = QStyleFactory::create("Fusion");
+        if (fusionStyle) {
+            QApplication::setStyle(fusionStyle);
+            QApplication::setPalette(fusionStyle->standardPalette());
+        }
+    } else {
+        QApplication::setPalette(QApplication::style()->standardPalette());
+    }
     // and apply some changes to styles
 
 #ifdef Q_OS_MACOS

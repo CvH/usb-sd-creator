@@ -35,6 +35,11 @@
 #include <QProxyStyle>
 #include <QNetworkProxy>
 #include <QDebug>
+#include <QStyleFactory>
+#include <QStyle>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#include <QStyleHints>
+#endif
 
 #ifndef ALWAYS_DEBUG_OUTPUT
 void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -50,7 +55,18 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_WINDOWS
     qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
 #endif
+    qputenv("QT_STYLE_OVERRIDE", "Fusion");
     QApplication app(argc, argv);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Light);
+#endif
+
+    QStyle *fusionStyle = QStyleFactory::create("Fusion");
+    if (fusionStyle) {
+        QApplication::setStyle(fusionStyle);
+        QApplication::setPalette(fusionStyle->standardPalette());
+    }
 
     const auto cmdArgs = app.arguments();
 
