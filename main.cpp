@@ -76,15 +76,17 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef Q_OS_MACOS
+    const QLatin1String elevatedParam{"--elevated"};
+
     // special GUI when executing as a "get admin password" program
-    if (qEnvironmentVariableIsSet(sudo::AskPassEnvVar.data()))
+    if (!cmdArgs.contains(elevatedParam) && qEnvironmentVariableIsSet(sudo::AskPassEnvVar.data()))
     {
-        sudo::askpass();
-        return app.exec();
+        return sudo::askpass();
     }
 
+    qunsetenv(sudo::AskPassEnvVar.data());
+
     // If not running with root privileges, relaunch executable with sudo.
-    const QLatin1String elevatedParam{"--elevated"};
     if (!cmdArgs.contains(elevatedParam) && getuid() != 0)
     {
         const auto executablePath = QCoreApplication::applicationFilePath();
@@ -95,7 +97,7 @@ int main(int argc, char *argv[])
         sudoProc.setProgram(QLatin1String{"sudo"});
         sudoProc.setArguments(QStringList{QLatin1String{"--askpass"}, executablePath, elevatedParam} + cmdArgs.mid(1));
 
-        QProcessEnvironment sudoEnv;
+        QProcessEnvironment sudoEnv = QProcessEnvironment::systemEnvironment();
         sudoEnv.insert(sudo::AskPassEnvVar, executablePath);
         sudoProc.setProcessEnvironment(sudoEnv);
 
