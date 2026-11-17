@@ -36,10 +36,10 @@ jobs:
           useQtAction: true
           qtArch: linux_gcc_64
           qtArchives: icu qtbase qtdeclarative qttools
-        - os: macos-latest
-          platform: macos
-          preset: release-macos
-          cpack: true
+        # - os: macos-latest
+        #   platform: macos
+        #   preset: release-macos
+        #   cpack: true
         - os: windows-latest
           platform: windows-msvc
           preset: release-msvc
@@ -258,8 +258,8 @@ jobs:
         # 1. Linux AppImage
         cp artifacts/linux/LibreELEC.USB-SD.Creator.Linux.x86_64.AppImage release_assets/
 
-        # 2. macOS DMG
-        cp artifacts/macos/LibreELEC.USB-SD.Creator.macOS.dmg release_assets/
+        # 2. macOS DMG (temporarily disabled)
+        # cp artifacts/macos/LibreELEC.USB-SD.Creator.macOS.dmg release_assets/
 
         # 3. Windows MSVC: upload ONLY LibreELEC.USB-SD.Creator.x64.exe (omit .zip, omit windows-mingw)
         cp artifacts/windows-msvc/LibreELEC.USB-SD.Creator.x64.exe release_assets/
@@ -280,7 +280,6 @@ jobs:
         | Platform | Package | Description |
         | :--- | :--- | :--- |
         | **Windows** | [LibreELEC.USB-SD.Creator.x64.exe](https://github.com/${{ env.REPO }}/releases/download/${{ env.TAG }}/LibreELEC.USB-SD.Creator.x64.exe) | 64-bit Windows Installer |
-        | **macOS** | [LibreELEC.USB-SD.Creator.macOS.dmg](https://github.com/${{ env.REPO }}/releases/download/${{ env.TAG }}/LibreELEC.USB-SD.Creator.macOS.dmg) | macOS Universal Disk Image |
         | **Linux** | [LibreELEC.USB-SD.Creator.Linux.x86_64.AppImage](https://github.com/${{ env.REPO }}/releases/download/${{ env.TAG }}/LibreELEC.USB-SD.Creator.Linux.x86_64.AppImage) | x86_64 Standalone AppImage |
 
         ---
@@ -299,9 +298,7 @@ jobs:
         fi
 
         gh release create "$TAG" \
-          release_assets/LibreELEC.USB-SD.Creator.x64.exe \
-          release_assets/LibreELEC.USB-SD.Creator.macOS.dmg \
-          release_assets/LibreELEC.USB-SD.Creator.Linux.x86_64.AppImage \
+          release_assets/* \
           --target "${{ github.sha }}" \
           --title "LibreELEC USB-SD Creator $TAG" \
           --generate-notes \
